@@ -1,8 +1,16 @@
+'use strict';
+
 const MongoClient = require('mongodb').MongoClient;
 
-const url = 'mongodb://localhost:27017/altcoin';
+let url = '';
+if (process.env.VCAP_SERVICES) {
+  const vcap_services = JSON.parse(process.env.VCAP_SERVICES);
+  url = vcap_services.mongodb[0].credentials.uri;
+} else {
+  url = 'mongodb://localhost:27017/altcoin';
+}
 
-_getDbInstance = () => {
+const _getDbInstance = () => {
   return new Promise((resolve, reject) => {
     MongoClient.connect(url, (err, db) => {
       if (err) {
@@ -15,7 +23,7 @@ _getDbInstance = () => {
   });
 };
 
-_getRecordAtDate = (date, collection) => {
+const _getRecordAtDate = (date, collection) => {
   return new Promise((resolve, reject) => {
     _getDbInstance().then(db => {
       db
@@ -35,7 +43,7 @@ _getRecordAtDate = (date, collection) => {
   });
 };
 
-_insertIntoDb = (collection, data) => {
+const _insertIntoDb = (collection, data) => {
   _getDbInstance().then(db => {
     db
       .collection(collection)
@@ -46,7 +54,7 @@ _insertIntoDb = (collection, data) => {
   });
 };
 
-_updateRecord = (collection, date, updateData) => {
+const _updateRecord = (collection, date, updateData) => {
   _getDbInstance().then(db => {
     db
       .collection(collection)

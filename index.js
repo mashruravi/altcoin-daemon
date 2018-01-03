@@ -2,6 +2,8 @@ const Pusher = require('pusher-client');
 const Constants = require('./constants');
 const DB = require('./database');
 
+const http = require('http');
+
 const pusherKey = process.env.PUSHER_KEY;
 if (!pusherKey) {
   console.error(
@@ -16,14 +18,14 @@ const pusherClient = new Pusher(pusherKey, {
 
 const previousValues = {};
 
-getCurrentDate = () => {
+const getCurrentDate = () => {
   const d = new Date();
   d.setSeconds(0);
   d.setMilliseconds(0);
   return d;
 };
 
-saveToDb = (currency, value) => {
+const saveToDb = (currency, value) => {
   const date = getCurrentDate();
   const collection = Constants.currencies[currency].dbCollection;
 
@@ -45,3 +47,9 @@ pusherClient.subscribe('my-channel').bind('ticker', data => {
     }
   });
 });
+
+const server = http.createServer((req, res) => {
+  res.end('daemon running...');
+});
+
+server.listen(process.env.PORT || 3000);

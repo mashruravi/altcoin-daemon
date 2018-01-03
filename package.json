@@ -1,7 +1,8 @@
 {
   "name": "altcoin-daemon",
   "version": "0.0.1",
-  "description": "Daemon process for altcoin ticker that collects data and stores it",
+  "description":
+    "Daemon process for altcoin ticker that collects data and stores it",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +13,8 @@
     "express": "^4.16.2",
     "mongodb": "^2.2.33",
     "pusher-client": "^1.1.0"
+  },
+  "engines": {
+    "node": "6.11.5"
   }
 }
